@@ -16,14 +16,16 @@ exports.addProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render("shop", {
-      prods: products,
-      pageTitle: "Shop",
-      path: "/",
-      hasProducts: products.length > 0,
-      activeShop: true,
-      productCSS: true,
-    });
-  });
+  Product.fetchAll()
+    .then(([rows, metaData]) => {
+      res.render("shop", {
+        prods: rows,
+        pageTitle: "Shop",
+        path: "/",
+        hasProducts: rows.length > 0,
+        activeShop: true,
+        productCSS: true,
+      });
+    })
+    .catch((err) => console.log(err));
 };
