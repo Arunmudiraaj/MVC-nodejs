@@ -40,10 +40,23 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  res.render("shop/cart", {
-    path: "/cart",
-    pageTitle: "Your Cart",
-  });
+  // res.render("shop/cart", {
+  //   path: "/cart",
+  //   pageTitle: "Your Cart",
+  // });
+
+  req.user
+    .getCart()
+    .then((cart) => {
+      console.log(cart);
+      return cart.getProducts();
+    })
+    .then((products) => {
+      res.redirect({ path: "/cart" });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
